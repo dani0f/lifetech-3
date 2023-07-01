@@ -1,4 +1,4 @@
-# lifetech-3
+# LifeTech-3
 IA generativa
 
 Para ejecutar:
