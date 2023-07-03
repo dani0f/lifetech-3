@@ -62,9 +62,6 @@ styled_html = """
 </div>
 """
 
-# Ejemplo de resultado del promp que resume los datos a ppt
-with open('example_content_ppt.txt') as f:
-    html = f.readlines()
 
 # Ejemplo de resultado del promp que resume los datos a ppt
 # with open('example_design_and_content.txt') as f:
