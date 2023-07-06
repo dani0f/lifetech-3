@@ -1,7 +1,6 @@
-from langchain.chat_models import ChatOpenAI
 import json
 from langchain.chat_models import ChatOpenAI
-from langchain import PromptTemplate, LLMChain
+from langchain import LLMChain
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     SystemMessagePromptTemplate,
@@ -88,55 +87,13 @@ def askSummarizer(ask):
 
     chat = ChatOpenAI(openai_api_key=key, temperature=0.8, model="gpt-3.5-turbo")
 
-
-    ask = """Nombre archivo: programa-de-asistencia-al-cumplimiento.pdf
-    PROGRAMA DE ASISTENCIA AL CUMPLIMIENTO
-    (PAC)
-    Permite a las empresas solicitar la sustitución de una multa asociada a las normas de higiene y seguridad, por la incorporación al
-    Programa de Asistencia al Cumplimiento (PAC).
-    ¿A quién está dirigido?
-    Empresas que tenga como máximo 49 trabajadores contratados al momento de constatarse la infracción, incluyendo las
-    sucursales o establecimientos regionales.
-    Y que no han hecho uso de este beneficio dentro de los 12 meses contados desde que se resolvió la solicitud de sustitución
-    anterior.
-    ¿En qué situaciones puedo solicitar PAC?
-    ·
-    La empresa ha sido notificada de la aplicación de la multa, por medio de una resolución.
-    ·
-    La empresa no ha solicitado la reconsideración de la multa.
-    ·
-    La empresa ha corregido las infracciones sancionadas.
-    ·
-    Las infracciones en las que incurrieron estén relacionadas a las normas de higiene y seguridad.
-    ·
-    No han interpuesto recursos judiciales contra la misma resolución.
-    ¿Qué documentos necesito para hacer el trámite?
-    ·Antecedentes que acrediten que la empresa dio cumplimiento íntegro a todas y cada una de las disposiciones legales por las que
-    se cursó la multa.
-    ·Solicitud de recursos administrativos. (formulario F10)
-    ·Declaración jurada para recursos administrativos.
-    ¿Dónde hago el trámite?
-    En las oficinas de la DT que curso las infracciones
-    ¿Cómo hago el trámite?
-    1. Reúna los antecedentes requeridos (evidencia que subsano las infracciones).
-    2.Diríjase a la oficina de la Inspección del Trabajo correspondiente al domicilio de la empresa.
-    3.Explique el motivo de su visita: solicitar la sustitución de multas de higiene y seguridad por el programa de asistencia al
-    cumplimiento.
-    4.Entregue los antecedentes requeridos. (F10, Declaración jurada para recursos administrativos y evidencia que subsano las
-    infracciones)
-    5.Como resultado del trámite, habrá solicitado la sustitución de multas de higiene y seguridad, respuesta que podrá obtener en un
-    plazo de 20 días hábiles, a través de una carta certificada o por la visita de un funcionario de la Inspección del Trabajo.
-    Los empleadores que no corrijan las infracciones que dieron origen a la multa, no implementen el sistema de gestión de seguridad
-    en el trabajo, o no efectúen la acreditación en forma oportuna, verán aumentado el monto original de la multa en un 25%."""
-
-
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, example_human, example_ai, human_message_prompt]
     )
     chain = LLMChain(llm=chat, prompt=chat_prompt)
     # get a chat completion from the formatted messages
-    result=chain.run(ask)
-    return(result)    
+    return chain.run(ask)
+ 
 
 
 
