@@ -48,3 +48,13 @@ def load_files(dir):
     return documents
 
 #print(load_files("dataset")[0])
+
+# Convertir pdf a txt
+#text = pdf_to_text("search_engine/documents/nombre.pdf")
+#with open("search_engine/dataset/nombre.txt", 'w', encoding='utf-8') as f:
+#    f.write(text)
+
+# Convertir doc a txt
+#text = doc_to_text("search_engine/documents/nombre.docx")
+#with open("search_engine/dataset/nombre.txt", 'w', encoding='utf-8') as f:
+#    f.write(text)
