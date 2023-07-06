@@ -1,9 +1,9 @@
 # LifeTech-3
 IA generativa
 
-Para ejecutar:
 
-pip install streamlit
+pip install -r requirements.txt
 
-
-streamlit run c:/Users/Daniela/Desktop/hackaton/lifetech-3/app.py 
+1. Download the model using python search_engine/download_model.py
+2. Copy the documents in the dir seach_engine/documents
+3. Execute streamlit run app.py 

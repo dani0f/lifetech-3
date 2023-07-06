@@ -45,10 +45,13 @@ def askProgrammer(ask):
 
     template = """Crea un div html con la idea propuesta basándote en el contexto de abajo para responder a la pregunta planteada. Si no puedes crearlo correctamente responde "No puedo hacerlo".
 
-    Contexto: Eres un diseñador gráfico profesional y estás trabajando en una página web para un cliente. Tu trabajo consiste utilizar las palabras que demarcan titulos (title), subtitulos (subtitle)
+    Contexto: Eres un diseñador web profesional y estás trabajando en una página web para un cliente. 
+    Tu trabajo consiste utilizar las palabras que demarcan titulos (title), subtitulos (subtitle)
     texto (text), itemizador (item) y enumarador (enum) para crear una presentación de diapositivas (slides) utilizando html y css. Se espera que devuelvas
-    un div html para cada diapositiva de la presentación. 
-    La salida deberan ser los slides resultantes de la estilización delimitados por el caracter barra vertical |"""
+    un div html para cada diapositiva de la presentación, si una diapositiva tiene más de 150 palabras separala en dos dispositivas. 
+    La salida deberan ser los slides resultantes de la estilización delimitados por el caracter barra vertical |
+    
+    Idea: utiliza distintos colores, tamaños y fuentes según la jerarquía del contenido de la presentacion."""
 
     example_ai = """<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; background-color: #00a19a; overflow-x: auto;"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content"><h1>FICHA TÉCNICA</h1><h2 style="color: #00a19a;">PROTOCOLO DE VIGILANCIA TRASTORNOS MUSCULOESQUELÉTICOS RELACIONADOS AL TRABAJO (TMERT)</h2></div></div></div>|
     <div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; background-color: #00a19a; overflow-x: auto;"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content"><h1>¿Qué es el Protocolo TMERT?</h1><h2 style="color: #00a19a;">Procedimiento y objetivos</h2><p>Es un procedimiento que entrega directrices para la prevención y control de los trastornos musculoesqueléticos (TME) de las extremidades superiores en las empresas. Contempla la identificación y evaluaciones de factores de riesgo biomecánicos, organizacionales y psicosociales en los puestos de trabajo, además de la vigilancia a la salud de los trabajadores expuestos.</p></div></div></div>|
@@ -64,7 +67,7 @@ def askProgrammer(ask):
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
 
 
-    chat = ChatOpenAI(openai_api_key=key, temperature=0.8, model="gpt-3.5-turbo")
+    chat = ChatOpenAI(openai_api_key=key, temperature=0.3, model="gpt-3.5-turbo")
 
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, example_human, example_ai, human_message_prompt]
@@ -73,7 +76,6 @@ def askProgrammer(ask):
 
 
     result=chain.run(ask)
-    print(result)
     return result.split("|")
 
 

@@ -5,6 +5,7 @@ import os
 import json 
 from Agents.programmer import askProgrammer
 from Agents.summarizer import askSummarizer
+from Agents.narrator import playNarrator, askNarrator
 from search_engine.semantic_search import query
 # #Función que agrega el link con fontawesome
 # def format_html(styled_html):
@@ -61,7 +62,13 @@ if respuesta:
     summarizer = askSummarizer(search[0])
     slides = askProgrammer(summarizer)
     for diap in slides:
+      print("DIAP: ",diap)
       component = st.components.v1.html(diap, width=800, height=600)
+      narrator = askNarrator(diap)
+      print("NARRADOR:",narrator)
+      playNarrator(narrator,200)
       #component.empty()
   else:
     print("not found")
+
+
