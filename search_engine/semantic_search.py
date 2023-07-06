@@ -2,12 +2,12 @@ from transformers import AutoTokenizer, AutoModel
 import torch
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from read_files import load_files
+from search_engine.read_files import load_files
 
 def query(query):
-    tokenizer = AutoTokenizer.from_pretrained("model")
-    model = AutoModel.from_pretrained("model")
-    documents = load_files('dataset')
+    tokenizer = AutoTokenizer.from_pretrained("search_engine/model")
+    model = AutoModel.from_pretrained("search_engine/model")
+    documents = load_files('search_engine/dataset')
     # Estos dos pasos siguientes se pueden pasar a otra función para hacer una base de datos de los embeddings de documentos
     # Preprocess and encode documents
     encoded_documents = []
@@ -56,7 +56,3 @@ def query(query):
     # Retrieve the top-k most similar documents
     top_k_documents = [documents[i] for i in top_k_indices]
     return top_k_documents
-
-result = query("incendio")
-for i in result:
-    print(i[:50])
