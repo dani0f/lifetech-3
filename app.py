@@ -39,13 +39,10 @@ st.sidebar.markdown('#### Opciones de la presentación')
 
 
 #---opciones avanzadas (al final)
-dtboth = st.sidebar.slider('Velocidad de reproducción', 0.1, 8.0, 1.0)  # min, max, default
-dt = dtboth / 2.0
+dtboth = st.sidebar.slider('Velocidad de reproducción', 0.1, 5.0, 2.0)  # min, max, default
+rate = int(dtboth * 100)
 
 whiten = st.sidebar.checkbox('Musica', value=True)
-
-
-
 
 
 st.markdown("""
@@ -63,11 +60,15 @@ if respuesta:
     slides = askProgrammer(summarizer)
     for diap in slides:
       print("DIAP: ",diap)
-      component = st.components.v1.html(diap, width=800, height=600)
+      if diap == "":
+        continue
       narrator = askNarrator(diap)
       print("NARRADOR:",narrator)
-      playNarrator(narrator,200)
-      #component.empty()
+      component = st.components.v1.html(diap, width=800, height=600)
+      duration = playNarrator(narrator,rate)
+      component.empty()
+    respuesta = ""
+    st.markdown("### Fin de la presentación, esperamos que haya sido útil!")
   else:
     print("not found")
 

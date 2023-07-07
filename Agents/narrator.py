@@ -64,10 +64,9 @@ def playNarrator(text, rate=150):
     # Init and set properties
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # Select the first voice in the list
-    for v in voices:
-        print(v,v.id)
-    engine.setProperty('voice', voices[1].id)
+    engine.setProperty('voice', voices[0].id)
     engine.setProperty('rate', rate) # Set the speaking rate in words per minute
+    engine.setProperty('volume', 0.7) # Set the volume between 0 and 1
 
     # Step 2: Generate the narrator voice
     engine.save_to_file(text, 'narration.wav')
@@ -76,7 +75,6 @@ def playNarrator(text, rate=150):
     # Step 3: Get the duration of the audio file
     audio = AudioSegment.from_wav('narration.wav')
     duration = round(audio.duration_seconds, 1)
-    print(f"Duration of the audio: {duration} seconds")
 
     # Step 4: Use ffmpeg to play the audio !!!!!!!!!!!!!!!
     # Requiere tener ffmpeg instalado en el sistema y anadido al PATH como variable de entorno
