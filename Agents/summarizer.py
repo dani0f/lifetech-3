@@ -41,8 +41,10 @@ def askSummarizer(ask):
     Las Mutualidades de Empleadores son fiscalizadas por la Superintendencia de Seguridad Social (www.suseso.cl) ACHS CENTER 600 600 22 47 - www.achs.cl
     """
     template = """Eres un escritor y organizador de texto experto. Tu trabajo es tomar un texto plano de un instructivo, 
-    resumir las partes importantes y convertirlo en una presentación de diapositivas debes utilizar la palabra "slice" para demarcar el inicio de una nueva diapositiva, 
-    la palabra "title" para denotar que el texto será el título, "subtitle" para denotar un subtítulo, "text" para denotar el texto de la diapositiva, "item" para denotar un itemizador y "enum" para denotar un enumerador del texto"""
+    resumir las partes importantes y convertirlo en una presentación de diapositivas, debes utilizar la palabra "slice" para demarcar el inicio de una nueva diapositiva, 
+    la palabra "title" para denotar que el texto será el título, "subtitle" para denotar un subtítulo, "text" para denotar el texto de la diapositiva, "item" para denotar un itemizador, "enum" para denotar un enumerador del texto y 
+    "strong" para resaltar una palabra utilizando negrita. El texto de cada diapositiva debe ser menor a 100 palabras y siempre debes terminar con una diapositiva de "gracias por su atención".
+    """
 
     example_ai ="""
     slice:
@@ -71,11 +73,15 @@ def askSummarizer(ask):
 
     slice:
     title: Fiscalización de las Mutualidades de Empleadores:
-    enum: Superintendencia de Seguridad Social: www.suseso.cl.
-    enum: ACHS CENTER: Teléfono 600 600 22 47, página web www.achs.cl.
+    enum: strong:Superintendencia de Seguridad Social: 
+    www.suseso.cl.
+    enum: strong:ACHS CENTER: 
+    Teléfono 600 600 22 47, página web www.achs.cl.
+
     slice:
-    title: ¡Gracias por su atención!
-    text: Nombre del archivo: protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf 
+    title: strong:¡Gracias por su atención!
+    text: Nombre del archivo: 
+    protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf 
     """
 
     system_message_prompt = SystemMessagePromptTemplate.from_template(template)

@@ -19,19 +19,11 @@ from search_engine.semantic_search import query
 # -- Set page config
 apptitle = 'Life tech-3'
 
-st.set_page_config(page_title=apptitle, page_icon="馃憮")
+st.set_page_config(page_title=apptitle, page_icon="")
 
 st.title('Life Tech-3')
 
-#with st.expander("Ver referencias"):
 
-#    st.markdown("""
-#Indica de donde se obtuvo la informaci贸n
-#""")
-
-
-#-- Create a text element and let the reader know the data is loading.
-strain_load_state = st.text('Loading data...this may take a minute')
 # -- Create sidebar for plot controls
 st.sidebar.markdown('## Configuración avanzada')
 
@@ -39,12 +31,8 @@ st.sidebar.markdown('#### Opciones de la presentación')
 
 
 #---opciones avanzadas (al final)
-dtboth = st.sidebar.slider('Velocidad de reproducción', 0.1, 8.0, 1.0)  # min, max, default
-dt = dtboth / 2.0
-
-whiten = st.sidebar.checkbox('Musica', value=True)
-
-
+velocity = st.sidebar.slider('Velocidad de reproducción', 0.75, 1.5, 1.0)  # min, max, default
+velocity = velocity * 200
 
 
 
@@ -56,19 +44,23 @@ st.markdown("""
 respuesta = st.text_input('Pregunta', '')
 st.write('', respuesta )
 
+
+
 if respuesta:
-  search = query(respuesta)
-  if(len(search) != 0 ):
-    summarizer = askSummarizer(search[0])
-    slides = askProgrammer(summarizer)
-    for diap in slides:
-      print("DIAP: ",diap)
-      component = st.components.v1.html(diap, width=800, height=600)
-      narrator = askNarrator(diap)
-      print("NARRADOR:",narrator)
-      playNarrator(narrator,200)
-      #component.empty()
-  else:
-    print("not found")
+  st.spinner("Loading")
+  with st.spinner('Wait for it...'):
+    search = query(respuesta)
+    if(len(search) != 0 ):
+      summarizer = askSummarizer(search[0])
+      string_slides = askProgrammer(summarizer)
+      string_narrations = askNarrator(string_slides)
+      slides = string_slides.split("|")
+      narrations = string_narrations.split("|")
+      for s,n in zip(slides,narrations):
+        component = st.components.v1.html(s, width=800, height=600)
+        playNarrator(n,200)
+        component.empty()
+    else:
+      print("not found")
 
 

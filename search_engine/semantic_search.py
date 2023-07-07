@@ -55,4 +55,6 @@ def query(query):
 
     # Retrieve the top-k most similar documents
     top_k_documents = [documents[i] for i in top_k_indices]
+    if len(top_k_documents) != 0:
+        print(f"File found: {top_k_documents[0]}")
     return top_k_documents
