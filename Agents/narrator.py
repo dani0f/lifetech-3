@@ -79,11 +79,6 @@ def playNarrator(text, rate=150):
     # Step 4: Use ffmpeg to play the audio !!!!!!!!!!!!!!!
     # Requiere tener ffmpeg instalado en el sistema y anadido al PATH como variable de entorno
     # with para que no se muestre el output de ffplay en la consola y generemos logs de mas (Se puede quitar para debug)
-    with open(os.devnull, 'w') as devnull:
-        subprocess.call(['ffplay', '-nodisp', '-autoexit', 'narration.wav'], stdout=devnull, stderr=devnull)
-
-    # Step 5: Delete the file audio after playing
-    os.remove('narration.wav')
     return duration
 
 
