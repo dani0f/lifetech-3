@@ -63,7 +63,7 @@ Capacite a sus trabajadores en el uso de extintores en caso de situación de eme
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
 
 
-    chat = ChatOpenAI(openai_api_key=key, temperature=0.3, model="gpt-3.5-turbo")
+    chat = ChatOpenAI(openai_api_key=key, temperature=0.2, model="gpt-3.5-turbo")
 
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, example_human, example_ai, human_message_prompt]
@@ -73,15 +73,7 @@ Capacite a sus trabajadores en el uso de extintores en caso de situación de eme
     return chain.run(ask)
 
 
-def playNarrator(text, rate=150):
-    # Init and set properties
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')  # Select the first voice in the list
-    for v in voices:
-        print(v,v.id)
-    engine.setProperty('voice', voices[1].id)
-    engine.setProperty('rate', rate) # Set the speaking rate in words per minute
-
+def playNarrator(text, engine):
     # Step 2: Generate the narrator voice
     engine.save_to_file(text, 'narration.wav')
     engine.runAndWait()

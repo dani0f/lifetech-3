@@ -5,3 +5,5 @@ env
 model
 credentials.json
 credentials
+embeddings.csv
+embeddings

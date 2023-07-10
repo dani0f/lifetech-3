@@ -1,20 +1,11 @@
 import streamlit as st
-import time
-import generator
-import os
-import json 
 from Agents.programmer import askProgrammer
 from Agents.summarizer import askSummarizer
 from Agents.narrator import playNarrator, askNarrator
 from search_engine.semantic_search import query
-# #Función que agrega el link con fontawesome
-# def format_html(styled_html):
-#   init_html = """<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">\n"""
-#   end_html = ""  
-#   return init_html + "".join(styled_html) + end_html
-
-# #Función que recibe un string con html/css y lo convierte en un componente. Segundo input es el tiempo que se mostrara la diapositiva.
-
+import pyttsx3
+from search_engine.load_embeddings import cargar_embeddings_desde_csv
+from search_engine.read_files import load_files
 
 # -- Set page config
 apptitle = 'Life tech-3'
@@ -22,6 +13,29 @@ apptitle = 'Life tech-3'
 st.set_page_config(page_title=apptitle, page_icon="")
 
 st.title('Life Tech-3')
+
+
+# @st.cache_data
+# def loadDocument():
+#   documents = load_files('search_engine\dataset')
+#   documents_embeddings = cargar_embeddings_desde_csv('search_engine\embeddings.csv')
+#   return documents, documents_embeddings
+
+@st.cache_resource
+def setEngine(rate):
+  # Init and set properties
+  engine = pyttsx3.init()
+  voices = engine.getProperty('voices')  # Select the first voice in the list
+  for v in voices:
+      print(v,v.id)
+  engine.setProperty('voice', voices[1].id)
+  engine.setProperty('rate', rate) # Set the speaking rate in words per minute
+  return engine
+
+
+
+#documents, document_embeddings = loadDocument()
+
 
 
 # -- Create sidebar for plot controls
@@ -41,24 +55,23 @@ st.markdown("""
 """)
             
 
-respuesta = st.text_input('Pregunta', '')
-st.write('', respuesta )
-
+respuesta = st.text_input('Pregunta')
 
 
 if respuesta:
-  st.spinner("Loading")
   with st.spinner('Wait for it...'):
+    engine = setEngine(150)
     search = query(respuesta)
+    print(search)
     if(len(search) != 0 ):
-      summarizer = askSummarizer(search[0])
+      summarizer = askSummarizer(search)
       string_slides = askProgrammer(summarizer)
       string_narrations = askNarrator(string_slides)
       slides = string_slides.split("|")
       narrations = string_narrations.split("|")
       for s,n in zip(slides,narrations):
         component = st.components.v1.html(s, width=800, height=600)
-        playNarrator(n,200)
+        playNarrator(n, engine)
         component.empty()
     else:
       print("not found")
