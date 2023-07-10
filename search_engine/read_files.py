@@ -19,7 +19,6 @@ def read_files_by_pages(dir):
     dir_list = os.listdir(document_path)
     documents = []
     for file in dir_list:
-        #print("read: ", document_path + "/" + file)
         if(file[-3:] == "pdf"):
             text = pdf_to_text(document_path + "/" + file)
             if(len(text) <= 7000):

@@ -2,16 +2,12 @@ from transformers import AutoTokenizer, AutoModel
 import torch
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from search_engine.read_files import load_files
-from search_engine.load_embeddings import cargar_embeddings_desde_csv
 
-def query(query):
+
+def query(query, documents, document_embeddings):
     tokenizer = AutoTokenizer.from_pretrained("search_engine/model")
     model = AutoModel.from_pretrained("search_engine/model")
      
-    documents = load_files("search_engine/dataset")
-    document_embeddings = cargar_embeddings_desde_csv('search_engine/embeddings.csv')
-
 
     encoded_query = tokenizer.encode_plus(
         query,
@@ -33,6 +29,3 @@ def query(query):
     return documents[best_index]
     
 
-#Detección en 0.45>
-#HAcer la segmentación en el gpt
-#print(query("incendio"))

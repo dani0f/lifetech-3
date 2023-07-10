@@ -4,7 +4,7 @@ from Agents.summarizer import askSummarizer
 from Agents.narrator import playNarrator, askNarrator
 from search_engine.semantic_search import query
 import pyttsx3
-from search_engine.load_embeddings import cargar_embeddings_desde_csv
+from search_engine.save_embeddings import load_embeddings
 from search_engine.read_files import load_files
 
 # -- Set page config
@@ -15,11 +15,11 @@ st.set_page_config(page_title=apptitle, page_icon="")
 st.title('Life Tech-3')
 
 
-# @st.cache_data
-# def loadDocument():
-#   documents = load_files('search_engine\dataset')
-#   documents_embeddings = cargar_embeddings_desde_csv('search_engine\embeddings.csv')
-#   return documents, documents_embeddings
+@st.cache_data
+def loadDocument():
+  documents = load_files('search_engine\dataset')
+  documents_embeddings = load_embeddings('search_engine\embeddings.csv')
+  return documents, documents_embeddings
 
 @st.cache_resource
 def setEngine(rate):
@@ -34,7 +34,7 @@ def setEngine(rate):
 
 
 
-#documents, document_embeddings = loadDocument()
+documents, document_embeddings = loadDocument()
 
 
 
@@ -51,18 +51,18 @@ velocity = velocity * 200
 
 
 st.markdown("""
- * Realiza una pregunta acerca de un instructivo
+ * Realiza una consulta acerca de un instructivo
 """)
             
 
-respuesta = st.text_input('Pregunta')
+response = st.text_input('Consulta')
 
 
-if respuesta:
-  with st.spinner('Wait for it...'):
+if response:
+  with st.spinner('Cargando...'):
     engine = setEngine(150)
-    search = query(respuesta)
-    print(search)
+    search = query(response,documents,document_embeddings)
+    print(search[:100])
     if(len(search) != 0 ):
       summarizer = askSummarizer(search)
       string_slides = askProgrammer(summarizer)

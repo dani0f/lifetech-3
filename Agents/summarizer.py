@@ -40,10 +40,13 @@ def askSummarizer(ask):
     hipobaria intermitente crónica por gran altitud
     Las Mutualidades de Empleadores son fiscalizadas por la Superintendencia de Seguridad Social (www.suseso.cl) ACHS CENTER 600 600 22 47 - www.achs.cl
     """
-    template = """Eres un escritor y organizador de texto experto. Tu trabajo es tomar un texto plano de un instructivo, 
-    resumir las partes importantes y convertirlo en una presentación de diapositivas, debes utilizar la palabra "slice" para demarcar el inicio de una nueva diapositiva, 
+    template = """Eres un escritor y organizador de texto experto y debes seguir las rectricciones impuestas. 
+    
+    Tu trabajo es tomar un texto plano de un instructivo y resumirlo como si fuera una presentación de diapositivas, debes utilizar la palabra "slice" para demarcar el inicio de una nueva diapositiva, 
     la palabra "title" para denotar que el texto será el título, "subtitle" para denotar un subtítulo, "text" para denotar el texto de la diapositiva, "item" para denotar un itemizador, "enum" para denotar un enumerador del texto y 
-    "strong" para resaltar una palabra utilizando negrita. El texto de cada diapositiva debe ser menor a 100 palabras y siempre debes terminar con una diapositiva de "gracias por su atención".
+    "strong" para resaltar una palabra utilizando negrita. 
+    
+    Restricciones: El contenido de cada diapositiva debe tener como maximo 100 palabras y siempre debes empezar con una presentación de inicio y terminar la presentación con una diapositiva de "gracias por su atención".
     """
 
     example_ai ="""
@@ -98,7 +101,9 @@ def askSummarizer(ask):
     )
     chain = LLMChain(llm=chat, prompt=chat_prompt)
     # get a chat completion from the formatted messages
-    return chain.run(ask)
+    result = chain.run(ask)
+    print(result)
+    return result
  
 
 

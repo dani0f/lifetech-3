@@ -21,38 +21,72 @@ def askNarrator(ask):
         api = json.load(f)
         key = api["openai"]
 
-    example_human = """<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; background-color: #ff5f5f; overflow-x: auto;"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content"><h1>FICHA TÉCNICA</h1><h2 style="color: #ff5f5f;">GESTIÓN DE RIESGO DE EMERGENCIA: INCENDIO</h2></div></div></div>|<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; background-color: #ff6347; overflow-x: auto;"><div class="column white" 
-style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content"><h1>Pasos sugeridos para la evacuación en caso de incendio</h1><ul><li>Si detecta una llama sin control o humo que indique un posible inicio de incendio, salga del lugar y avise inmediatamente a los trabajadores del área y jefatura disponible</li><li>Si escucha la alarma o grito de advertencia de incendio, deje sus funciones y evacúe el lugar de trabajo hacia la zona de seguridad definida por la empresa</li><li>Si hay visitas y/o clientes en la empresa, facilite su pronta evacuación. Hágalo con calma, no corra</li><li>Llame a los Bomberos, indicando la dirección de la empresa, comuna, referencia de la ubicación y cualquier otra información que solicite la central de alarma</li><li>Si existen lesionados, llamar inmediatamente al número de emergencias de la ACHS</li><li>Corte el suministro eléctrico y de gas, siempre que esto no lo exponga al calor y humo emanado por el incendio. Informe 
-de esta acción a la llegada de los Bomberos y oriéntelos respecto a la ubicación del foco de la emergencia</li><li>Manténgase en la zona de seguridad a la espera de instrucciones de su jefatura y autoridades. Siempre considere estar alejado del calor y humo, facilitando también el acceso al personal de emergencia</li><li>Se podrán retomar las labores e ingresar a las dependencias, sólo cuando la autoridad lo permita y la gerencia de la empresa lo indique</li></ul></div></div></div>|
-<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; background-color: #ff6347; overflow-x: auto;"><div class="column white" 
-style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content"><h1>Prevenir un incendio</h1><ul><li>Mantener un orden e higiene del centro de trabajo, evita la generación de incendios (eliminación de maleza, combustible mal almacenado, entre otros) o sustancias 
-inflamables</li><li>Contar con extintores de incendio acordes al material combustible existente en el centro de trabajo</li><li>Ubicar extintores, debidamente señalizados, en 
-zonas libres de obstáculos</li><li>Capacite a sus trabajadores en el uso de extintores en caso de situación de emergencia</li></ul></div></div></div>|"""
+    example_human = """slice:
+title: Recomendaciones en caso de tsunami
+
+slice:
+title: Recomendaciones previas a un tsunami
+text: - Infórmate sobre la zona de inundación por tsunami en tu comuna.
+text: - Verifica si tu edificio se encuentra en una zona de fácil inundación.
+text: - Identifica las vías de evacuación, puntos de encuentro y zonas sin riesgo de inundación.
+
+slice:
+title: Durante un tsunami
+text: - Protégete durante un sismo violento: agáchate, cúbrete y afírmate.
+text: - Evalúa si el terremoto ha causado daños y evacua si es necesario.
+text: - Evacúa de inmediato si recibes una alerta oficial de tsunami o ves que el mar se retira.
+text: - Dirígete a una zona libre de inundación a una altura de al menos 30 metros sobre el nivel del mar.
+text: - Sigue las instrucciones de las autoridades y mantente en la zona segura hasta que sea seguro regresar.
+
+slice:
+title: Después de un tsunami
+text: - Mantente alejado de los escombros en el agua.
+text: - Regresa a tu hogar solo cuando las autoridades lo indiquen.
+text: - Ingresa a tu vivienda con precaución y abre las ventanas para secar el lugar.
+text: - Revisa el suministro de agua y alimentos, y hiérvela antes de beberla.
+text: - Mantente informado a través de una radio o televisión a pilas.
+text: - Utiliza el teléfono solo para emergencias y considera utilizar mensajes de texto.
+
+slice:
+title: Números de utilidad en caso de emergencia
+text: - ACHS SAMU: Información sobre tipo de emergencia, estado de lesionados y dirección de la emergencia.
+text: - ONEMI: Información sobre tipo de emergencia y dirección de la emergencia.
+
+slice:
+title: ¡Gracias por su atención!
+text: Nombre del archivo: search_engine\documents/tsunami.pdf<Page:1>"""
 
     template = """Eres un amable presentador profesional de una mutual de seguridad.
 
-    Vas a recibir diapositivas de una presentación que esta organizada como html, cada diapositiva esta delimitada por el caracter barra vertical |.
-    A partir de esta presentación deberás narrar el contenido enfatisando en los puntos claves.
-    En caso de que el html no tenga contenido, ignora la narración de esa diapositiva.
-    El resultado será la narración de cada diapositiva en formato csv con delimitador el caracter barra vertical | al final de cada diapositiva.
+    Tu trabajo consiste utilizar las palabras que demarcan diapositivas (slide), titulos (title), subtitulos (subtitle)
+    texto (text), itemizador (item), enumarador (enum) y negrita (strong) para crear una narración de presentación de diapositivas (slides). Se espera que devuelvas
+    una narración para cada diapositiva de la presentación.
+    Las narraciones deben estar en formato csv delimitadas por el caracter barra vertical |.
+    En caso de no existir contenido, ignora la narración de esa diapositiva.
     """
 
-    example_ai = """FICHA TÉCNICA
-GESTIÓN DE RIESGO DE EMERGENCIA: INCENDIO|
-Pasos sugeridos para la evacuación en caso de incendio
-Si detecta una llama sin control o humo que indique un posible inicio de incendio, salga del lugar y avise inmediatamente a los trabajadores del área y jefatura disponible
-Si escucha la alarma o grito de advertencia de incendio, deje sus funciones y evacúe el lugar de trabajo hacia la zona de seguridad definida por la empresa
-Si hay visitas y/o clientes en la empresa, facilite su pronta evacuación. Hágalo con calma, no corra
-Llame a los Bomberos, indicando la dirección de la empresa, comuna, referencia de la ubicación y cualquier otra información que solicite la central de alarma
-Si existen lesionados, llamar inmediatamente al número de emergencias de la ACHS
-Corte el suministro eléctrico y de gas, siempre que esto no lo exponga al calor y humo emanado por el incendio. Informe de esta acción a la llegada de los Bomberos y oriéntelos respecto a la ubicación del foco de la emergencia
-Manténgase en la zona de seguridad a la espera de instrucciones de su jefatura y autoridades. Siempre considere estar alejado del calor y humo, facilitando también el acceso al personal de emergencia
-Se podrán retomar las labores e ingresar a las dependencias, sólo cuando la autoridad lo permita y la gerencia de la empresa lo indique|
-Prevenir un incendio
-Mantener un orden e higiene del centro de trabajo, evita la generación de incendios (eliminación de maleza, combustible mal almacenado, entre otros) o sustancias inflamables
-Contar con extintores de incendio acordes al material combustible existente en el centro de trabajo
-Ubicar extintores, debidamente señalizados, en zonas libres de obstáculos
-Capacite a sus trabajadores en el uso de extintores en caso de situación de emergencia|
+    example_ai = """Recomendaciones en caso de tsunami|
+Infórmate sobre la zona de inundación por tsunami en tu comuna.
+Verifica si tu edificio se encuentra en una zona de fácil inundación.
+Identifica las vías de evacuación, puntos de encuentro y zonas sin riesgo de inundación.|
+Durante un tsunami
+Protégete durante un sismo violento: agáchate, cúbrete y afírmate.
+Evalúa si el terremoto ha causado daños y evacua si es necesario.
+Evacúa de inmediato si recibes una alerta oficial de tsunami o ves que el mar se retira.
+Dirígete a una zona libre de inundación a una altura de al menos 30 metros sobre el nivel del mar.
+Sigue las instrucciones de las autoridades y mantente en la zona segura hasta que sea seguro regresar.|
+Después de un tsunami
+Mantente alejado de los escombros en el agua.
+Regresa a tu hogar solo cuando las autoridades lo indiquen.
+Ingresa a tu vivienda con precaución y abre las ventanas para secar el lugar.
+Revisa el suministro de agua y alimentos, y hiérvela antes de beberla.
+Mantente informado a través de una radio o televisión a pilas.
+Utiliza el teléfono solo para emergencias y considera utilizar mensajes de texto.|
+Números de utilidad en caso de emergencia
+ACHS SAMU: Información sobre tipo de emergencia, estado de lesionados y dirección de la emergencia.
+ONEMI: Información sobre tipo de emergencia y dirección de la emergencia.|
+¡Gracias por su atención!
+Nombre del archivo: search_engine\documents/tsunami.pdf, Página 1.|
 """
 
 
@@ -69,8 +103,9 @@ Capacite a sus trabajadores en el uso de extintores en caso de situación de eme
         [system_message_prompt, example_human, example_ai, human_message_prompt]
     )
     chain = LLMChain(llm=chat, prompt=chat_prompt)
-
-    return chain.run(ask)
+    result = chain.run(ask)
+    print(result)
+    return result
 
 
 def playNarrator(text, engine):
