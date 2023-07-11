@@ -51,6 +51,3 @@ def load_files(dir):
         documents.append(doc)
     return documents
 
-#save_files("search_engine\documents","search_engine\dataset")
-#print(load_files("search_engine\dataset")[0])
-#print(load_files("search_engine\dataset")[35])
