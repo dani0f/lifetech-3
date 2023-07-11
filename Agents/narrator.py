@@ -14,7 +14,6 @@ from langchain.prompts.chat import (
 
 
 
-
 def askNarrator(ask):
 
     with open("credentials.json", "r") as f:
@@ -85,7 +84,6 @@ Nombre del archivo: tsunami.pdf, Página: 1|
     print("NARRACCION ",result)
     return result
 
-
 def playNarrator(text, engine):
     # Step 2: Generate the narrator voice
     engine.save_to_file(text, 'narration.wav')
@@ -94,7 +92,6 @@ def playNarrator(text, engine):
     # Step 3: Get the duration of the audio file
     audio = AudioSegment.from_wav('narration.wav')
     duration = round(audio.duration_seconds, 1)
-    print(f"Duration of the audio: {duration} seconds")
 
     # Step 4: Use ffmpeg to play the audio !!!!!!!!!!!!!!!
     # Requiere tener ffmpeg instalado en el sistema y anadido al PATH como variable de entorno

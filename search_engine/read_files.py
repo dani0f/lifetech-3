@@ -51,3 +51,4 @@ def load_files(dir):
         documents.append(doc)
     return documents
 
+

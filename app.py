@@ -45,15 +45,15 @@ st.sidebar.markdown('#### Opciones de la presentación')
 
 
 #---opciones avanzadas (al final)
+
+
 velocity = st.sidebar.slider('Velocidad de reproducción', 0.75, 1.5, 1.0)  # min, max, default
 velocity = velocity * 200
 
 
-
 st.markdown("""
  * Realiza una consulta acerca de un instructivo
-""")
-            
+""")       
 
 response = st.text_input('Consulta')
 
@@ -75,5 +75,4 @@ if response:
         component.empty()
     else:
       print("not found")
-
 
