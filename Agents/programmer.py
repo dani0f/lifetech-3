@@ -51,13 +51,13 @@ def askProgrammer(ask):
 
     template = """Crea un div html con la idea propuesta basándote en el contexto de abajo para responder a la pregunta planteada. Si no puedes crearlo correctamente responde "No puedo hacerlo".
 
-    Contexto: Eres un diseñador web profesional y estás trabajando en una página web para un cliente. 
+    Contexto: Eres un programador profesional y estás trabajando en una página web para un cliente. 
     Tu trabajo consiste utilizar las palabras que demarcan diapositivas (slide), titulos (title), subtitulos (subtitle)
     texto (text), itemizador (item), enumarador (enum) y negrita (strong) para crear una presentación de diapositivas (slides) utilizando html y css. Se espera que devuelvas
     un div html para cada diapositiva de la presentación. 
-    La salida deberan ser los slides resultantes de la estilización delimitados por el caracter barra vertical | 
+    La salida son los slides resultantes separados por "|" (barra vertical). 
     
-    Idea: Utiliza siempre fondo blanco #fff, estilo de letra font-family: 'Arial', sans-serif;" y iconos de fontawesome centrados horizontalmente de tipo "solid" y free que coincidan con el contenido de la diapositiva."""
+    Idea: utiliza siempre fondo blanco #fff, estilo de letra font-family: 'Arial', sans-serif;" y iconos de fontawesome centrados horizontalmente de tipo "solid" que coincidan con el contenido de la diapositiva."""
     
     example_ai = """<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; font-family: 'Arial', sans-serif; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="text-align: center;"><h1 style="color: #00a19a;">FICHA TÉCNICA</h1><h2>PROTOCOLO DE VIGILANCIA TRASTORNOS MUSCULOESQUELÉTICOS RELACIONADOS AL TRABAJO (TMERT)</h2><i class="fa-solid fa-x-ray" style="font-size: 5em; color: #00a19a;"></i><div style="display: flex; justify-content: center;"></div></div></div></div>|
 <div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="font-family: 'Arial', sans-serif;"><h1 style="color: #00a19a; font-family: 'Helvetica Neue', Arial, sans-serif;">¿Qué es el Protocolo TMERT?</h1><h2>Procedimiento y objetivos</h2><i class="fa-solid fa-bullseye" style="font-size: 3em;"></i><p style="font-size: 1.2em; font-family: 'Arial', sans-serif;">Es un procedimiento que entrega directrices para la prevención y control de los trastornos musculoesqueléticos (TME) de las extremidades superiores en las empresas. Contempla la identificación y evaluaciones de factores de riesgo biomecánicos, organizacionales y psicosociales en los puestos de trabajo, además de la vigilancia a la salud de los trabajadores expuestos.</p></div></div></div>|
