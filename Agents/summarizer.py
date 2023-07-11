@@ -17,7 +17,7 @@ def askSummarizer(ask):
         key = api["openai"]
 
 
-    example_human = """Nombre archivo: protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf
+    example_human = """Nombre archivo: protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf<Page:1>
     FICHA
     TÉCNICA
     GUÍA TÉCNICA SOBRE EXPOSICIÓN OCUPACIONAL A
@@ -40,9 +40,15 @@ def askSummarizer(ask):
     hipobaria intermitente crónica por gran altitud
     Las Mutualidades de Empleadores son fiscalizadas por la Superintendencia de Seguridad Social (www.suseso.cl) ACHS CENTER 600 600 22 47 - www.achs.cl
     """
-    template = """Eres un escritor y organizador de texto experto. Tu trabajo es tomar un texto plano de un instructivo, 
-    resumir las partes importantes y convertirlo en una presentación de diapositivas debes utilizar la palabra "slice" para demarcar el inicio de una nueva diapositiva, 
-    la palabra "title" para denotar que el texto será el título, "subtitle" para denotar un subtítulo, "text" para denotar el texto de la diapositiva, "item" para denotar un itemizador y "enum" para denotar un enumerador del texto"""
+    
+    template = """Eres un escritor y organizador de texto experto y debes seguir las rectricciones impuestas. 
+    
+    Tu trabajo es tomar un texto plano de un instructivo y resumirlo como si fuera una presentación de diapositivas, debes utilizar la palabra "slice" para demarcar el inicio de una nueva diapositiva, 
+    la palabra "title" para denotar que el texto será el título, "subtitle" para denotar un subtítulo, "text" para denotar el texto de la diapositiva, "item" para denotar un itemizador, "enum" para denotar un enumerador del texto y 
+    "strong" para resaltar una palabra utilizando negrita. 
+    
+    Restricciones: El contenido de cada diapositiva debe tener como maximo 100 palabras y siempre debes empezar con una presentación de inicio y terminar la presentación con una diapositiva de "gracias por su atención".
+    """
 
     example_ai ="""
     slice:
@@ -71,11 +77,15 @@ def askSummarizer(ask):
 
     slice:
     title: Fiscalización de las Mutualidades de Empleadores:
-    enum: Superintendencia de Seguridad Social: www.suseso.cl.
-    enum: ACHS CENTER: Teléfono 600 600 22 47, página web www.achs.cl.
+    enum: strong:Superintendencia de Seguridad Social: 
+    www.suseso.cl.
+    enum: strong:ACHS CENTER: 
+    Teléfono 600 600 22 47, página web www.achs.cl.
+
     slice:
-    title: ¡Gracias por su atención!
-    text: Nombre del archivo: protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf 
+    title: strong:¡Gracias por su atención!
+    text: Nombre del archivo: 
+    protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf, página 1.
     """
 
     system_message_prompt = SystemMessagePromptTemplate.from_template(template)
@@ -91,8 +101,9 @@ def askSummarizer(ask):
         [system_message_prompt, example_human, example_ai, human_message_prompt]
     )
     chain = LLMChain(llm=chat, prompt=chat_prompt)
-    # get a chat completion from the formatted messages
-    return chain.run(ask)
+    result = chain.run(ask)
+    print("summarizer",result)
+    return result
  
 
 

@@ -1,33 +1,37 @@
 import os
 import pdfplumber
-import docx2txt
+import re
+
+def preprocess(text):
+    regex = r'[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ\s.,]'
+    return re.sub(regex, '', text).lower()
 
 def pdf_to_text(filename):
-  text = ""
   with pdfplumber.open(filename) as temp:
+    text = "Nombre de archivo: " + filename
     for p in temp.pages:
-      text = text + p.extract_text()
+        text =  text + str(p) + "\n" + preprocess(p.extract_text())
   return text
 
-def doc_to_text(filename):
-    my_text = docx2txt.process(filename)
-    return my_text
 
-def read_files(dir):
+def read_files_by_pages(dir):
     document_path = dir
     dir_list = os.listdir(document_path)
     documents = []
     for file in dir_list:
-        print("read: ", document_path + "/" + file)
         if(file[-3:] == "pdf"):
-            documents.append("Nombre archivo: " + file + "\n" + pdf_to_text(document_path + "/" + file))
-        elif(file[-3] == "ocx"):
-            documents.append("Nombre archivo: " + file + "\n" + doc_to_text(document_path + "/" + file))      
+            text = pdf_to_text(document_path + "/" + file)
+            if(len(text) <= 7000):
+                documents.append(text)
+            while (len(text) > 7000) :
+                documents.append(file + "\n" + text[:7000])
+                text = text[7001:]
+
     return documents
+    
 
 def save_files(dir_input, dir_output):
-    from read_files import read_files
-    documents = read_files(dir_input)
+    documents = read_files_by_pages(dir_input)
     file = dir_output
     for i in range(len(documents)):
         with open(file + f'/doc_{i}.txt', 'w', encoding='utf-8') as f:
@@ -47,14 +51,4 @@ def load_files(dir):
         documents.append(doc)
     return documents
 
-#print(load_files("dataset")[0])
 
-# Convertir pdf a txt
-#text = pdf_to_text("search_engine/documents/nombre.pdf")
-#with open("search_engine/dataset/nombre.txt", 'w', encoding='utf-8') as f:
-#    f.write(text)
-
-# Convertir doc a txt
-#text = doc_to_text("search_engine/documents/nombre.docx")
-#with open("search_engine/dataset/nombre.txt", 'w', encoding='utf-8') as f:
-#    f.write(text)

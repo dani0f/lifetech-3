@@ -14,30 +14,56 @@ from langchain.prompts.chat import (
 
 
 
-
 def askNarrator(ask):
 
     with open("credentials.json", "r") as f:
         api = json.load(f)
         key = api["openai"]
 
-    example_human = """<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; background-color: #00a19a; overflow-x: auto;"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content"><h1>Pasos sugeridos para la evacuación en caso de incendio</h1><ul style="list-style-type: disc;"><li>Si detecta una llama sin control o humo que indique un posible inicio de incendio, salga del lugar y avise inmediatamente a los trabajadores del área y jefatura disponible.</li><li>Si escucha la alarma o grito de advertencia de incendio, deje sus funciones y evacúe el lugar de trabajo hacia la zona de seguridad definida por la empresa.</li><li>Si hay visitas y/o clientes en la empresa, facilite su pronta evacuación. Hágalo con calma, no corra.</li><li>Llame a los Bomberos, indicando la dirección de la empresa, comuna, referencia de la ubicación y cualquier otra información que solicite la central de alarma.</li><li>Si existen lesionados, llame inmediatamente al número de emergencias de 
-    la ACHS.</li><li>Corte el suministro eléctrico y de gas, siempre que esto no lo exponga al calor y humo emanado por el incendio. Informe de esta acción a la llegada de los Bomberos y oriéntelos respecto a la ubicación del foco de la emergencia.</li><li>Manténgase en la zona de seguridad a la espera de instrucciones de su jefatura y autoridades. Siempre considere estar alejado del calor y humo, facilitando también el acceso al personal de emergencia.</li><li>Se podrán retomar las labores e ingresar a las dependencias, sólo cuando la autoridad lo permita y la gerencia de la empresa lo indique.</li></ul></div></div></div>"""
+    example_human = """<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; font-family: 'Arial', sans-serif; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="text-align: center;"><h1 style="color: #00a19a;">Serie Procedimientos Emergencias - Qué hacer en caso de tsunami</h1><i class="fa-solid fa-wave-square" style="font-size: 5em; color: #00a19a;"></i><div style="display: flex; justify-content: center;"></div></div></div></div>|
+<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="font-family: 'Arial', sans-serif;"><h1 style="color: #00a19a; font-family: 'Helvetica Neue', Arial, sans-serif;">Recomendaciones previas a un tsunami</h1><ul style="list-style-type: disc; text-align: left;"><li style="font-size: 1.2em;">Infórmate si la comuna de tu lugar de trabajo tiene identificada la zona de inundación por tsunami.</li><li style="font-size: 1.2em;">Revisa si el edificio en que trabajas se encuentra en una zona de fácil inundación.</li><li style="font-size: 1.2em;">Identifica las vías de evacuación, puntos de encuentro y la zona sin riesgo de inundación por tsunami.</li></ul></div></div></div>|
+<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="font-family: 'Arial', sans-serif;"><h1 style="color: #00a19a; font-family: 'Helvetica Neue', Arial, sans-serif;">Durante un tsunami</h1><ul style="list-style-type: disc; text-align: left;"><li style="font-size: 1.2em;">Si estás en el borde costero y sientes un sismo violento, protégete con las tres reglas básicas: agáchate, cúbrete y afírmate.</li><li style="font-size: 1.2em;">Evalúa si el terremoto rompió murallas o dificultó que te mantuvieras en pie. En estos casos, debes evacuar de forma inmediata y no intentar salvar tus pertenencias.</li><li style="font-size: 1.2em;">Si recibes información oficial de alerta o alarma de tsunami, o ves que se recoge el mar, evacúa de inmediato a una zona libre de inundación a 30 metros de altura sobre el nivel del mar.</li><li style="font-size: 1.2em;">Quédate en la zona segura hasta que las autoridades indiquen que es seguro regresar a tu hogar. Las olas de un tsunami pueden llegar hasta 24 
+horas después.</li></ul></div></div></div>|
+<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="font-family: 'Arial', sans-serif;"><h1 style="color: #00a19a; font-family: 'Helvetica Neue', Arial, sans-serif;">Después de un tsunami</h1><ul style="list-style-type: disc; text-align: left;"><li style="font-size: 1.2em;">Permanece alejado de los escombros en el agua.</li><li style="font-size: 1.2em;">Vuelve a tu hogar cuando las autoridades comuniquen que la alerta ha sido levantada.</li><li style="font-size: 1.2em;">Al ingresar a tu vivienda, hazlo con precaución y abre las ventanas para secar el lugar. Retira el barro mientras esté húmedo.</li><li style="font-size: 1.2em;">Revisa el suministro de agua y alimentos, ya que pueden estar contaminados.</li><li style="font-size: 1.2em;">Junta agua potable por si se corta el suministro y hiérvela antes de beberla.</li><li style="font-size: 1.2em;">Mantente informado mediante una radio o televisión a pilas.</li><li style="font-size: 1.2em;">"""
 
-    template = """Eres un amable presentador profesional de una mutual de seguridad.
-    A partir de un html que simula ser una presentación de diapositivas deberás narrar el contenido.
-    En caso de que el html no tenga contenido, ignora la narración de esa diapositiva.
-    """
+    template = """Eres un orador de presentaciones de una mutual de seguridad.
 
-    example_ai = """Pasos sugeridos para la evacuación en caso de incendio
-Si detecta una llama sin control o humo que indique un posible inicio de incendio, salga del lugar y avise inmediatamente a los trabajadores del área y jefatura disponible.
-Si escucha la alarma o grito de advertencia de incendio, deje sus funciones y evacúe el lugar de trabajo hacia la zona de seguridad definida por la empresa.
-Si hay visitas y/o clientes en la empresa, facilite su pronta evacuación. Hágalo con calma, no corra.
-Llame a los Bomberos, indicando la dirección de la empresa, comuna, referencia de la ubicación y cualquier otra información que solicite la central de alarma.
-Si existen lesionados, llame inmediatamente al número de emergencias de la ACHS.
-Corte el suministro eléctrico y de gas, siempre que esto no lo exponga al calor y humo emanado por el incendio. Informe de esta acción a la llegada de los Bomberos y oriéntelos respecto a la ubicación del foco de la emergencia.
-Manténgase en la zona de seguridad a la espera de instrucciones de su jefatura y autoridades. Siempre considere estar alejado del calor y humo, facilitando también el acceso al personal de emergencia.
-Se podrán retomar las labores e ingresar a las dependencias, sólo cuando la autoridad lo permita y la gerencia de la empresa lo indique.
+    Vas a recibir diapositivas de una presentación organizada como html en donde cada diapositiva esta delimitada por el caracter barra vertical "|".
+    Deberas narrar el contenido de texto dentro del html y las narraciones debe estar separadas por slices o diapositivas.
+    
+    El resultado será la narración de cada diapositiva en formato csv con delimitador el caracter barra vertical "|" al final de cada narración de diapositiva."""
+
+
+    example_ai = """Serie Procedimientos Emergencias - Qué hacer en caso de tsunami|
+Recomendaciones previas a un tsunami
+- Infórmate si la comuna de tu lugar de trabajo tiene identificada la zona de inundación por tsunami.
+- Revisa si el edificio en que trabajas se encuentra en una zona de fácil inundación.
+- Identifica las vías de evacuación, puntos de encuentro y la zona sin riesgo de inundación por tsunami.|
+Durante un tsunami
+- Si estás en el borde costero y sientes un sismo violento, protégete con las tres reglas básicas: agáchate, cúbrete y afírmate.
+- Evalúa si el terremoto rompió murallas o dificultó que te mantuvieras en pie. En estos casos, debes evacuar de forma inmediata y no intentar salvar tus pertenencias.
+- Si recibes información oficial de alerta o alarma de tsunami, o ves que se recoge el mar, evacúa de inmediato a una zona libre de inundación a 30 metros de altura sobre el nivel del mar.
+- Quédate en la zona segura hasta que las autoridades indiquen que es seguro regresar a tu hogar. Las olas de un tsunami pueden llegar hasta 24 horas después.|
+Después de un tsunami
+- Permanece alejado de los escombros en el agua.
+- Vuelve a tu hogar cuando las autoridades comuniquen que la alerta ha sido levantada.
+- Al ingresar a tu vivienda, hazlo con precaución y abre las ventanas para secar el lugar. Retira el barro mientras esté húmedo.
+- Revisa el suministro de agua y alimentos, ya que pueden estar contaminados.
+- Junta agua potable por si se corta el suministro y hiérvela antes de beberla.
+- Mantente informado mediante una radio o televisión a pilas.
+- Utiliza el teléfono solo para emergencias y preferiblemente mensajes de texto.|
+Números de utilidad en caso de emergencia
+Información que debe indicar
+- Tipo de emergencia tsunami
+- Número y estado general de lesionados
+- Dirección y referencia de la emergencia
+- ACHS SAMU|
+Números de utilidad en caso de emergencia
+Información que debe indicar
+- Tipo de emergencia tsunami
+- Dirección y cualquier otro dato que facilite su ubicación.|
+¡Gracias por su atención!
+Nombre del archivo: tsunami.pdf, Página: 1|
 """
 
 
@@ -48,26 +74,17 @@ Se podrán retomar las labores e ingresar a las dependencias, sólo cuando la au
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
 
 
-    chat = ChatOpenAI(openai_api_key=key, temperature=0.5, model="gpt-3.5-turbo")
+    chat = ChatOpenAI(openai_api_key=key, temperature=0.2, model="gpt-3.5-turbo")
 
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, example_human, example_ai, human_message_prompt]
     )
     chain = LLMChain(llm=chat, prompt=chat_prompt)
+    result = chain.run(ask)
+    print("NARRACCION ",result)
+    return result
 
-    return chain.run(ask)
-
-
-
-
-def playNarrator(text, rate=150):
-    # Init and set properties
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')  # Select the first voice in the list
-    engine.setProperty('voice', voices[0].id)
-    engine.setProperty('rate', rate) # Set the speaking rate in words per minute
-    engine.setProperty('volume', 0.7) # Set the volume between 0 and 1
-
+def playNarrator(text, engine):
     # Step 2: Generate the narrator voice
     engine.save_to_file(text, 'narration.wav')
     engine.runAndWait()
@@ -85,8 +102,5 @@ def playNarrator(text, rate=150):
     # Step 5: Delete the file audio after playing
     os.remove('narration.wav')
     return duration
-
-
-
 
 
