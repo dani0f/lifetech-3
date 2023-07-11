@@ -6,6 +6,9 @@ from search_engine.semantic_search import query
 import pyttsx3
 from search_engine.save_embeddings import load_embeddings
 from search_engine.read_files import load_files
+from search_engine.generate_files import generate_files
+from search_engine.download_model import download_model
+import os
 
 # -- Set page config
 apptitle = 'Life tech-3'
@@ -13,6 +16,19 @@ apptitle = 'Life tech-3'
 st.set_page_config(page_title=apptitle, page_icon="")
 
 st.title('Life Tech-3')
+
+
+#verificar si estan las carpetas
+
+def required_paths():
+  required_paths =["search_engine\model","search_engine\dataset"]
+  if not os.path.isdir(required_paths[0]):
+    print("Download model...")
+    download_model()
+  if not os.path.isdir(required_paths[1]):
+    print("Save files...")
+    generate_files()
+
 
 
 @st.cache_data
@@ -33,8 +49,9 @@ def setEngine(rate):
   return engine
 
 
-
-documents, document_embeddings = loadDocument()
+with st.spinner('Descargando archivos necesarios'): 
+  required_paths()
+  documents, document_embeddings = loadDocument()
 
 
 

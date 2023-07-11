@@ -6,9 +6,9 @@ def preprocess(text):
     regex = r'[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ\s.,]'
     return re.sub(regex, '', text).lower()
 
-def pdf_to_text(filename):
+def pdf_to_text(filename, file):
   with pdfplumber.open(filename) as temp:
-    text = "Nombre de archivo: " + filename
+    text = "Nombre de archivo: " + file
     for p in temp.pages:
         text =  text + str(p) + "\n" + preprocess(p.extract_text())
   return text
@@ -20,7 +20,7 @@ def read_files_by_pages(dir):
     documents = []
     for file in dir_list:
         if(file[-3:] == "pdf"):
-            text = pdf_to_text(document_path + "/" + file)
+            text = pdf_to_text(document_path + "/" + file, file)
             if(len(text) <= 7000):
                 documents.append(text)
             while (len(text) > 7000) :

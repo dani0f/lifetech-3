@@ -4,7 +4,7 @@ import csv
 import numpy as np
 from search_engine.read_files import load_files
 
-def embeddings(dir_input):
+def generate_embeddings(dir_input):
     tokenizer = AutoTokenizer.from_pretrained("search_engine/model")
     model = AutoModel.from_pretrained("search_engine/model")
     documents = load_files(dir_input)
@@ -35,7 +35,7 @@ def embeddings(dir_input):
 
 
 def save_embeddings_csv(dir_input, dir_output):
-    embeddings = embeddings(dir_input)
+    embeddings = generate_embeddings(dir_input)
     dimension_embedding = embeddings[0].shape[0]
 
     with open(dir_output, 'w', newline='') as archivo_csv:
