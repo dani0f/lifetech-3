@@ -79,8 +79,8 @@ if response:
   with st.spinner('Cargando...'):
     engine = setEngine(150)
     search = query(response,documents,document_embeddings)
-    print(search[:100])
-    if(len(search) != 0 ):
+    if(len(search) > 0 ):
+      print(search[:50])
       summarizer = askSummarizer(search)
       string_slides = askProgrammer(summarizer)
       string_narrations = askNarrator(string_slides)
@@ -92,4 +92,5 @@ if response:
         component.empty()
     else:
       print("not found")
+      st.write("Not found")
 
