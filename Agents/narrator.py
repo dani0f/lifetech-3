@@ -21,72 +21,50 @@ def askNarrator(ask):
         api = json.load(f)
         key = api["openai"]
 
-    example_human = """slice:
-title: Recomendaciones en caso de tsunami
+    example_human = """<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; font-family: 'Arial', sans-serif; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="text-align: center;"><h1 style="color: #00a19a;">Serie Procedimientos Emergencias - Qué hacer en caso de tsunami</h1><i class="fa-solid fa-wave-square" style="font-size: 5em; color: #00a19a;"></i><div style="display: flex; justify-content: center;"></div></div></div></div>|
+<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="font-family: 'Arial', sans-serif;"><h1 style="color: #00a19a; font-family: 'Helvetica Neue', Arial, sans-serif;">Recomendaciones previas a un tsunami</h1><ul style="list-style-type: disc; text-align: left;"><li style="font-size: 1.2em;">Infórmate si la comuna de tu lugar de trabajo tiene identificada la zona de inundación por tsunami.</li><li style="font-size: 1.2em;">Revisa si el edificio en que trabajas se encuentra en una zona de fácil inundación.</li><li style="font-size: 1.2em;">Identifica las vías de evacuación, puntos de encuentro y la zona sin riesgo de inundación por tsunami.</li></ul></div></div></div>|
+<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="font-family: 'Arial', sans-serif;"><h1 style="color: #00a19a; font-family: 'Helvetica Neue', Arial, sans-serif;">Durante un tsunami</h1><ul style="list-style-type: disc; text-align: left;"><li style="font-size: 1.2em;">Si estás en el borde costero y sientes un sismo violento, protégete con las tres reglas básicas: agáchate, cúbrete y afírmate.</li><li style="font-size: 1.2em;">Evalúa si el terremoto rompió murallas o dificultó que te mantuvieras en pie. En estos casos, debes evacuar de forma inmediata y no intentar salvar tus pertenencias.</li><li style="font-size: 1.2em;">Si recibes información oficial de alerta o alarma de tsunami, o ves que se recoge el mar, evacúa de inmediato a una zona libre de inundación a 30 metros de altura sobre el nivel del mar.</li><li style="font-size: 1.2em;">Quédate en la zona segura hasta que las autoridades indiquen que es seguro regresar a tu hogar. Las olas de un tsunami pueden llegar hasta 24 
+horas después.</li></ul></div></div></div>|
+<div class="slide" style="display: flex; height: 100vh; align-items: stretch; justify-content: center; overflow-x: auto; background-color: #fff;"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><div class="column white" style="flex: 1; padding: 2rem; color: #000; background-color: #fff; display: flex; align-items: center; justify-content: center;"><div class="content" style="font-family: 'Arial', sans-serif;"><h1 style="color: #00a19a; font-family: 'Helvetica Neue', Arial, sans-serif;">Después de un tsunami</h1><ul style="list-style-type: disc; text-align: left;"><li style="font-size: 1.2em;">Permanece alejado de los escombros en el agua.</li><li style="font-size: 1.2em;">Vuelve a tu hogar cuando las autoridades comuniquen que la alerta ha sido levantada.</li><li style="font-size: 1.2em;">Al ingresar a tu vivienda, hazlo con precaución y abre las ventanas para secar el lugar. Retira el barro mientras esté húmedo.</li><li style="font-size: 1.2em;">Revisa el suministro de agua y alimentos, ya que pueden estar contaminados.</li><li style="font-size: 1.2em;">Junta agua potable por si se corta el suministro y hiérvela antes de beberla.</li><li style="font-size: 1.2em;">Mantente informado mediante una radio o televisión a pilas.</li><li style="font-size: 1.2em;">"""
 
-slice:
-title: Recomendaciones previas a un tsunami
-text: - Infórmate sobre la zona de inundación por tsunami en tu comuna.
-text: - Verifica si tu edificio se encuentra en una zona de fácil inundación.
-text: - Identifica las vías de evacuación, puntos de encuentro y zonas sin riesgo de inundación.
+    template = """Eres un orador de presentaciones de una mutual de seguridad.
 
-slice:
-title: Durante un tsunami
-text: - Protégete durante un sismo violento: agáchate, cúbrete y afírmate.
-text: - Evalúa si el terremoto ha causado daños y evacua si es necesario.
-text: - Evacúa de inmediato si recibes una alerta oficial de tsunami o ves que el mar se retira.
-text: - Dirígete a una zona libre de inundación a una altura de al menos 30 metros sobre el nivel del mar.
-text: - Sigue las instrucciones de las autoridades y mantente en la zona segura hasta que sea seguro regresar.
+    Vas a recibir diapositivas de una presentación organizada como html en donde cada diapositiva esta delimitada por el caracter barra vertical "|".
+    Deberas narrar el contenido de texto dentro del html y las narraciones debe estar separadas por slices o diapositivas.
+    
+    El resultado será la narración de cada diapositiva en formato csv con delimitador el caracter barra vertical "|" al final de cada narración de diapositiva."""
 
-slice:
-title: Después de un tsunami
-text: - Mantente alejado de los escombros en el agua.
-text: - Regresa a tu hogar solo cuando las autoridades lo indiquen.
-text: - Ingresa a tu vivienda con precaución y abre las ventanas para secar el lugar.
-text: - Revisa el suministro de agua y alimentos, y hiérvela antes de beberla.
-text: - Mantente informado a través de una radio o televisión a pilas.
-text: - Utiliza el teléfono solo para emergencias y considera utilizar mensajes de texto.
 
-slice:
-title: Números de utilidad en caso de emergencia
-text: - ACHS SAMU: Información sobre tipo de emergencia, estado de lesionados y dirección de la emergencia.
-text: - ONEMI: Información sobre tipo de emergencia y dirección de la emergencia.
-
-slice:
-title: ¡Gracias por su atención!
-text: Nombre del archivo: search_engine\documents/tsunami.pdf<Page:1>"""
-
-    template = """Eres un amable presentador profesional de una mutual de seguridad.
-
-    Tu trabajo consiste utilizar las palabras que demarcan diapositivas (slide), titulos (title), subtitulos (subtitle)
-    texto (text), itemizador (item), enumarador (enum) y negrita (strong) para crear una narración de presentación de diapositivas (slides). Se espera que devuelvas
-    una narración para cada diapositiva de la presentación.
-    Las narraciones deben estar en formato csv delimitadas por el caracter barra vertical |.
-    En caso de no existir contenido, ignora la narración de esa diapositiva.
-    """
-
-    example_ai = """Recomendaciones en caso de tsunami|
-Infórmate sobre la zona de inundación por tsunami en tu comuna.
-Verifica si tu edificio se encuentra en una zona de fácil inundación.
-Identifica las vías de evacuación, puntos de encuentro y zonas sin riesgo de inundación.|
+    example_ai = """Serie Procedimientos Emergencias - Qué hacer en caso de tsunami|
+Recomendaciones previas a un tsunami
+- Infórmate si la comuna de tu lugar de trabajo tiene identificada la zona de inundación por tsunami.
+- Revisa si el edificio en que trabajas se encuentra en una zona de fácil inundación.
+- Identifica las vías de evacuación, puntos de encuentro y la zona sin riesgo de inundación por tsunami.|
 Durante un tsunami
-Protégete durante un sismo violento: agáchate, cúbrete y afírmate.
-Evalúa si el terremoto ha causado daños y evacua si es necesario.
-Evacúa de inmediato si recibes una alerta oficial de tsunami o ves que el mar se retira.
-Dirígete a una zona libre de inundación a una altura de al menos 30 metros sobre el nivel del mar.
-Sigue las instrucciones de las autoridades y mantente en la zona segura hasta que sea seguro regresar.|
+- Si estás en el borde costero y sientes un sismo violento, protégete con las tres reglas básicas: agáchate, cúbrete y afírmate.
+- Evalúa si el terremoto rompió murallas o dificultó que te mantuvieras en pie. En estos casos, debes evacuar de forma inmediata y no intentar salvar tus pertenencias.
+- Si recibes información oficial de alerta o alarma de tsunami, o ves que se recoge el mar, evacúa de inmediato a una zona libre de inundación a 30 metros de altura sobre el nivel del mar.
+- Quédate en la zona segura hasta que las autoridades indiquen que es seguro regresar a tu hogar. Las olas de un tsunami pueden llegar hasta 24 horas después.|
 Después de un tsunami
-Mantente alejado de los escombros en el agua.
-Regresa a tu hogar solo cuando las autoridades lo indiquen.
-Ingresa a tu vivienda con precaución y abre las ventanas para secar el lugar.
-Revisa el suministro de agua y alimentos, y hiérvela antes de beberla.
-Mantente informado a través de una radio o televisión a pilas.
-Utiliza el teléfono solo para emergencias y considera utilizar mensajes de texto.|
+- Permanece alejado de los escombros en el agua.
+- Vuelve a tu hogar cuando las autoridades comuniquen que la alerta ha sido levantada.
+- Al ingresar a tu vivienda, hazlo con precaución y abre las ventanas para secar el lugar. Retira el barro mientras esté húmedo.
+- Revisa el suministro de agua y alimentos, ya que pueden estar contaminados.
+- Junta agua potable por si se corta el suministro y hiérvela antes de beberla.
+- Mantente informado mediante una radio o televisión a pilas.
+- Utiliza el teléfono solo para emergencias y preferiblemente mensajes de texto.|
 Números de utilidad en caso de emergencia
-ACHS SAMU: Información sobre tipo de emergencia, estado de lesionados y dirección de la emergencia.
-ONEMI: Información sobre tipo de emergencia y dirección de la emergencia.|
+Información que debe indicar
+- Tipo de emergencia tsunami
+- Número y estado general de lesionados
+- Dirección y referencia de la emergencia
+- ACHS SAMU|
+Números de utilidad en caso de emergencia
+Información que debe indicar
+- Tipo de emergencia tsunami
+- Dirección y cualquier otro dato que facilite su ubicación.|
 ¡Gracias por su atención!
-Nombre del archivo: search_engine\documents/tsunami.pdf, Página 1.|
+Nombre del archivo: tsunami.pdf, Página: 1|
 """
 
 
@@ -104,7 +82,7 @@ Nombre del archivo: search_engine\documents/tsunami.pdf, Página 1.|
     )
     chain = LLMChain(llm=chat, prompt=chat_prompt)
     result = chain.run(ask)
-    print(result)
+    print("NARRACCION ",result)
     return result
 
 

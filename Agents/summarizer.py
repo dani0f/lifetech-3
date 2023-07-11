@@ -17,7 +17,7 @@ def askSummarizer(ask):
         key = api["openai"]
 
 
-    example_human = """Nombre archivo: protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf
+    example_human = """Nombre archivo: protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf<Page:1>
     FICHA
     TÉCNICA
     GUÍA TÉCNICA SOBRE EXPOSICIÓN OCUPACIONAL A
@@ -40,6 +40,7 @@ def askSummarizer(ask):
     hipobaria intermitente crónica por gran altitud
     Las Mutualidades de Empleadores son fiscalizadas por la Superintendencia de Seguridad Social (www.suseso.cl) ACHS CENTER 600 600 22 47 - www.achs.cl
     """
+    
     template = """Eres un escritor y organizador de texto experto y debes seguir las rectricciones impuestas. 
     
     Tu trabajo es tomar un texto plano de un instructivo y resumirlo como si fuera una presentación de diapositivas, debes utilizar la palabra "slice" para demarcar el inicio de una nueva diapositiva, 
@@ -84,7 +85,7 @@ def askSummarizer(ask):
     slice:
     title: strong:¡Gracias por su atención!
     text: Nombre del archivo: 
-    protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf 
+    protocolos-ministerio-de-salud-hipobaria-intermitente-cronica-por-gran-altitud.pdf, página 1.
     """
 
     system_message_prompt = SystemMessagePromptTemplate.from_template(template)
@@ -100,9 +101,8 @@ def askSummarizer(ask):
         [system_message_prompt, example_human, example_ai, human_message_prompt]
     )
     chain = LLMChain(llm=chat, prompt=chat_prompt)
-    # get a chat completion from the formatted messages
     result = chain.run(ask)
-    print(result)
+    print("summarizer",result)
     return result
  
 
