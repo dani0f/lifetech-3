@@ -54,8 +54,7 @@ def askProgrammer(ask):
     Contexto: Eres un programador profesional y estás trabajando en una página web para un cliente. 
     Tu trabajo consiste utilizar las palabras que demarcan diapositivas (slide), titulos (title), subtitulos (subtitle)
     texto (text), itemizador (item), enumarador (enum) y negrita (strong) para crear una presentación de diapositivas (slides) utilizando html y css. Se espera que devuelvas
-    un div html para cada diapositiva de la presentación. 
-    La salida son los slides resultantes separados por "|" (barra vertical). 
+    un div html para cada diapositiva de la presentación. Cada uno de los slides resultantes deberás siempre terminarlo con el caracter barra vertical "|".
     
     Idea: utiliza siempre fondo blanco #fff, estilo de letra font-family: 'Arial', sans-serif;" y iconos de fontawesome centrados horizontalmente de tipo "solid" que coincidan con el contenido de la diapositiva."""
     
