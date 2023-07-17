@@ -13,6 +13,7 @@ import base64
 from mutagen.mp3 import MP3
 import time
 
+
 # -- Set page config
 apptitle = 'Life tech-3'
 
@@ -64,54 +65,108 @@ def autoplay_audio(file_path: str):
 
   
 
-
-
-
-
 with st.spinner('Descargando archivos necesarios'): 
   required_paths()
   documents, document_embeddings = loadDocument()
 
 
-
-# -- Create sidebar for plot controls
-st.sidebar.markdown('## Configuración avanzada')
-
-st.sidebar.markdown('#### Opciones de la presentación')
-
-
-#---opciones avanzadas (al final)
-
-
-velocity = st.sidebar.slider('Velocidad de reproducción', 0.75, 1.5, 1.0)  # min, max, default
-velocity = velocity * 200
- 
-
 response = st.text_input("""
 Realiza una consulta acerca de un **instructivo**
 """,placeholder="¿Qué hago en caso de un tsunami?")
+
+styles = """<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100vw;
+    padding: 2rem;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+
+  .slide h1 {
+    font-size: 2.0rem;
+    margin-bottom: 1.5rem;
+    color: #00a19a;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .slide h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+    color: #333;
+  }
+
+  .slide p {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: #555;
+  }
+
+  .slide ul {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+    color: #555;
+    font-size: 1.2rem;
+  }
+
+  .slide li {
+    margin-bottom: 0.5rem;
+  }
+
+  .slide a {
+    color: #0000FF;
+    text-decoration: none;
+  }
+
+  .slide a:hover {
+    text-decoration: underline;
+  }
+
+  .slide i {
+    font-size: 2.5rem;
+    color: #00a19a;
+  }
+</style>"""
 
 
 search = ""
 if response:
   with st.spinner('Cargando...'):
     search = query(response,documents,document_embeddings)
+    print("search",search)
     if(len(search) > 0 ):
-      print(search[:50])
-      summarizer = askSummarizer(search)
-      string_slides = askProgrammer(summarizer)
+      #print(search[:50])
+      #summarizer 
+      string_slides = askSummarizer(search)
       string_narrations = askNarrator(string_slides)
-      slides = string_slides.split("|")
       narrations = string_narrations.split("|")  
-      audios = generate_audios(narrations)
+      audios = generate_audios(narrations)  
+
+      slides = ["""<div class="slide">""" + slide for slide in string_slides.split("""<div class="slide">""")[1:]]
+
+
 
 
   if(len(search) > 0):
+    print("SEARCH ",search)
     progress_bar = st.progress(0)
     for i, audio_filename in enumerate(audios):
-      print(slides[i])
-      print(narrations[i])
-      component = st.components.v1.html(slides[i], width=800, height=600)  
+      #print(slides[i])
+      #print(narrations[i])
+      component = st.components.v1.html(slides[i] + styles, width=700, height=600)  
       duration = autoplay_audio(audio_filename)
       progress = (i + 1) / len(audios)
       progress_bar.progress(progress)
@@ -123,7 +178,7 @@ if response:
     st.write("Not found")
 
 
-# filename = "audio.wav"
+
 
 
 
